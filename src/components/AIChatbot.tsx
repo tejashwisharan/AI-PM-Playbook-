@@ -8,8 +8,8 @@ KNOWLEDGE BASE: CHIP HUYEN'S AI PRINCIPLES & AI PM PLAYBOOK (EXTENDED)
 
 1. STRATEGY & SCOPING:
 - Probabilistic Thinking: Shift from deterministic (if-then-else) to probabilistic (likely outcomes). AI discovers patterns from data.
-- When to use AI: High dimensionality (many variables), constant evolution (spam/fraud), scale (millions of tasks), cheap mistakes (recommendations).
-- Defensibility: Build "Data Moats" via proprietary data flywheels. Integrate AI into user workflows to increase switching costs.
+- Data Flywheel: More users -> More data -> Better models -> Better product -> More users. This is the primary moat.
+- AI-First Mindset: Start with the data, not the feature. Focus on iterative discovery.
 - Buy vs Build vs Adapt: 
     * Buy: Use standard APIs for generic tasks (translation, basic summary). Fastest time to market.
     * Adapt: Use RAG (Retrieval-Augmented Generation) or Fine-tuning for tasks requiring private context or specific styles.
@@ -19,31 +19,23 @@ KNOWLEDGE BASE: CHIP HUYEN'S AI PRINCIPLES & AI PM PLAYBOOK (EXTENDED)
 - Data-Centric AI: 80% of effort on data quality (relevant, consistent, clean) vs model architecture.
 - Iterative Loop: Scoping -> Data Curation -> Model Adaptation -> Evaluation -> Deployment -> Monitoring.
 - Evaluation-Driven Development: Use "Eval Sets" (golden datasets) to measure progress. "AI as a Judge" uses strong LLMs to score outputs.
-- Deployment Strategies: 
-    * Shadow Mode: Model runs in background, outputs logged but not shown to users.
-    * Canary Release: Roll out to 1-5% of users first.
-    * A/B Testing: Compare model variants on business KPIs.
+- Deployment Strategies: Shadow Mode (background logging), Canary Release (1-5% rollout), A/B Testing (KPI comparison).
 
 3. METRICS & PERFORMANCE:
-- ML Metrics: Precision (avoid false positives), Recall (avoid false negatives), F1 (balance), NDCG (ranking quality).
-- LLM Metrics: 
-    * TTFT (Time to First Token): Perceived speed.
-    * TPOT (Time per Output Token): Generation throughput.
-    * Factual Consistency: Hallucination check using NLI or LLM-as-a-judge.
-- Business Metrics: Automation Rate (% tasks solved by AI), Cost per Task, User Acceptance Rate (implicit/explicit feedback).
+- Evaluation Hierarchy: Deterministic (Unit tests) -> Model-based (LLM-as-a-Judge) -> Human-in-the-loop (Golden Sets).
+- Behavioral Testing: Invariance (changing names shouldn't change sentiment), Directional Expectation (adding "bad" words should lower score).
+- RAG Metrics: Faithfulness (is it in the context?), Answer Relevance (does it answer the query?).
+- Business Metrics: Automation Rate, Cost per Task, User Acceptance Rate.
 
 4. PRICING & ECONOMICS:
 - Unit Economics: AI has real marginal costs (compute/tokens).
-- Models: 
-    * Usage-based: Pay per token/request.
-    * Tiered: Monthly credits or volume discounts.
-    * Value-based: Pricing based on the outcome (e.g., $ per lead generated).
-- Optimization: Prompt engineering (shorter prompts), Model Distillation (large labels small), Semantic Caching (reuse responses).
+- Models: Usage-based (per token), Subscription + Credits, Value-based (per outcome).
+- Optimization: Model Cascading (small model first), Prompt Compression, Semantic Caching.
 
 5. REQUIREMENTS (PRDs):
-- Probabilistic Requirements: Define "Usefulness Thresholds" (e.g., >90% accuracy for release).
-- Failure Handling: Fallbacks (human-in-the-loop), confidence scores, "I don't know" responses.
-- Safety & Ethics: Hallucination guardrails, bias mitigation, PII scrubbing, latency SLOs.
+- AI PRD Template: Use Case & ROI, Data Requirements, Failure Mode Analysis, Latency SLOs.
+- Prompt Engineering: Persona, Constraints, Few-shot examples, Output format.
+- Safety & Ethics: Hallucination guardrails, bias mitigation, PII scrubbing.
 
 6. MONITORING & DRIFT:
 - Drift Types: 
@@ -51,25 +43,28 @@ KNOWLEDGE BASE: CHIP HUYEN'S AI PRINCIPLES & AI PM PLAYBOOK (EXTENDED)
     * Label Shift: Output distribution changes.
     * Concept Drift: The relationship between input and output changes.
 - Observability: Use Traces to debug multi-step systems (Retrieval -> Prompt -> LLM -> Scorer).
-- Feedback Loops: Explicit (thumbs up/down) vs Implicit (edits, clicks, time on page).
+- RAG Observability: Visualizing retrieval steps to find where the chain broke.
 
-7. UX DESIGN FOR AI:
+7. ETHICS & SAFETY:
+- Bias Types: Historical, Representation, Measurement.
+- Explainability (XAI): Feature importance, Counterfactuals ("What if?").
+- EU AI Act: Categorizes AI by risk level (High, Limited, Minimal).
+
+8. UX DESIGN FOR AI:
 - Designing for Uncertainty: Use confidence scores, provide multiple options, and allow user corrections.
 - Designing for Latency: Use streaming responses, optimistic UI, and progress indicators.
 - Human-in-the-Loop (HITL): Design interfaces for users to review, edit, and approve AI outputs.
+- AI Personality: Tone, helpfulness vs. conciseness, persona consistency.
 
-8. INFRASTRUCTURE & STACK:
-- Modern AI Stack: Application Layer (React/Next.js), Orchestration (LangChain/LlamaIndex), Model Layer (OpenAI/Anthropic/Llama), Infrastructure (Vector DBs like Pinecone/Milvus).
-- RAG Pipeline: Document Chunking -> Embedding -> Vector Storage -> Retrieval -> Augmentation -> Generation.
-
-9. LEGAL & COMPLIANCE:
-- Copyright & IP: Be aware of fair use and training data provenance.
-- Data Privacy: Implement PII scrubbing and ensure data residency compliance (GDPR/CCPA).
-- AI Governance: Establish clear accountability and transparency in AI decision-making.
+9. INFRASTRUCTURE & STACK:
+- Modern AI Stack: Application Layer -> Orchestration (LangChain/LlamaIndex) -> Model Layer -> Infrastructure (Vector DBs).
+- Vector DBs: Pinecone, Weaviate. Used for semantic search and RAG.
+- GPU Orchestration: Managing H100s, quantization, and speculative decoding.
 
 10. TEAM & CAREER:
-- AI PM vs Traditional PM: AI PMs focus on data strategy, experimental design, and technical empathy for ML constraints.
-- Skillset: Data literacy, understanding model architectures, and designing for non-deterministic systems.
+- AI PM Skillset: Data literacy (confusion matrices), experimental design, technical empathy.
+- Transition Roadmap: Master fundamentals -> Build a RAG app -> Lead an AI pilot.
+- Team Roles: AI Engineers, Data Engineers, MLOps, Human Annotators.
 `;
 
 const SYSTEM_INSTRUCTION = `
